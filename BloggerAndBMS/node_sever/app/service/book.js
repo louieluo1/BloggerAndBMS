@@ -62,7 +62,7 @@ class BookService extends Service {
                 return null;
             }
         }
-        // 获取书籍中的第一节
+        // 通过书的id获取书籍中的第一节
     async getFirstSectionByBookId(id) {
         try {
             const chapters = await this.app.model.Blog.findAll({

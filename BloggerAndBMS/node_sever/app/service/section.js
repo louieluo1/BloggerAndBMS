@@ -54,19 +54,57 @@ class SectionService extends Service {
                 ],
                 include: [{
                     model: this.app.model.Chapter,
-                    as: 'chapter'
+                    as: 'chapter',
                 }],
                 where: { chapter_id }
             });
-            return ture;
+            return sectionList;
         } catch (error) {
-            return false;
+            return null;
         }
     }
 
 
     // 获得节详情
+    async getSectionDetail(id) {
+        try {
+            const section = await this.app.model.Section.findAll({
+                where: { id }
+            })
+            return section
+        } catch (error) {
+            return null;
+        }
+    }
 
-
+    async getMenuSectionId(id) {
+        try {
+            const section = await this.app.model.Section.finOne({
+                where: { id },
+                include: {
+                    model: this.app.model.Chapter,
+                    as: 'chapter',
+                    include: {
+                        this.app.model.Book,
+                        as: 'book',
+                    }
+                }
+            });
+            let book_id = section.dataValues.chapter_id.dataValues.Book.dataValues.id;
+            const chapters = await this.app.model.Chapter.findAll({
+                where: { book_id }
+            })
+            for (let item of chapters) {
+                let chapter_id = item.dataValues.id;
+                const sections = await this.app.model.Section.findAll({
+                    where: { chapter_id }
+                })
+                item.dataValues.sectionList = sections;
+            }
+            return chapters;
+        } catch (error) {
+            return null;
+        }
+    }
 }
 module.exports = SectionService;
