@@ -5,8 +5,8 @@ module.exports = app => {
         orderby: INTEGER,
     });
     Chapter.associate = function() {
-        app.model.Chapter.belongTo(app.model.Book, {
-            foreignkey: 'book_id',
+        app.model.Chapter.belongsTo(app.model.Book, {
+            foreignKey: 'book_id',
             as: 'book',
         });
     };

@@ -1,4 +1,4 @@
-'user strict';
+'use strict';
 const Service = require('egg').Service;
 class SectionService extends Service {
     // 添加节
@@ -9,6 +9,7 @@ class SectionService extends Service {
                 orderby: body.orderby,
                 md_text: body.md_text,
                 html_texy: body.html_text,
+                chapter_id: body.chapter_id
             }
             await this.app.model.Section.create(section);
             return true;
@@ -23,7 +24,7 @@ class SectionService extends Service {
             await this.app.model.Section.destroy({
                 where: { id }
             })
-            return ture;
+            return true;
         } catch (error) {
             return false;
         }
@@ -39,14 +40,14 @@ class SectionService extends Service {
                 html_text,
                 orderby,
             }, { where: { id } })
-            return ture;
+            return true;
         } catch (error) {
             return false;
         }
     }
 
     // 查询所有节
-    async getSectionlist(chapter_id) {
+    async getSectionList(chapter_id) {
         try {
             const sectionList = await this.app.model.Section.findAll({
                 'order': [
@@ -68,7 +69,7 @@ class SectionService extends Service {
     // 获得节详情
     async getSectionDetail(id) {
         try {
-            const section = await this.app.model.Section.findAll({
+            const section = await this.app.model.Section.findOne({
                 where: { id }
             })
             return section
@@ -77,28 +78,28 @@ class SectionService extends Service {
         }
     }
 
-    async getMenuSectionId(id) {
+    async getMenuBySectionId(id) {
         try {
-            const section = await this.app.model.Section.finOne({
+            const section = await this.app.model.Section.findOne({
                 where: { id },
                 include: {
                     model: this.app.model.Chapter,
                     as: 'chapter',
                     include: {
-                        this.app.model.Book,
+                        model: this.app.model.Book,
                         as: 'book',
                     }
                 }
             });
-            let book_id = section.dataValues.chapter_id.dataValues.Book.dataValues.id;
+            let book_id = section.dataValues.chapter.dataValues.book.dataValues.id;
             const chapters = await this.app.model.Chapter.findAll({
                 where: { book_id }
-            })
+            });
             for (let item of chapters) {
                 let chapter_id = item.dataValues.id;
                 const sections = await this.app.model.Section.findAll({
                     where: { chapter_id }
-                })
+                });
                 item.dataValues.sectionList = sections;
             }
             return chapters;

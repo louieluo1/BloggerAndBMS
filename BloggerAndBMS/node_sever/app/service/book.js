@@ -7,7 +7,7 @@ class BookService extends Service {
                 const book = {
                     title: body.title,
                     img: body.img,
-                    orderby: body.orderby,
+                    orderby: body.orderby
                 };
                 await this.app.model.Book.create(book);
                 return true;
@@ -18,12 +18,8 @@ class BookService extends Service {
         // 删除书籍
     async deleteBook(id) {
             try {
-                await this.app.model.Blog.destroy({
-                    where: {
-                        id,
-                    }
-                });
-                return ture;
+                await this.app.model.Book.destroy({ where: { id } });
+                return true;
             } catch (error) {
                 return false;
             }
@@ -31,16 +27,8 @@ class BookService extends Service {
         // 修改书籍
     async updateBook(id, { title, img, orderby }) {
             try {
-                await this.app.model.Blogupdate({
-                    title,
-                    img,
-                    orderby,
-                }, {
-                    where: {
-                        id,
-                    }
-                })
-                return ture;
+                await this.app.model.Book.update({ title, img, orderby }, { where: { id } });
+                return true;
             } catch (error) {
                 return false;
             }
@@ -51,36 +39,36 @@ class BookService extends Service {
                 const number = parseInt(query.page);
                 const start = number * 10 - 10;
                 const degree = parseInt(query.total);
-                const bookList = await this.app.model.Blog.findAll({
+                const bookList = await this.app.model.Book.findAll({
                     limit: [start, degree],
                     'order': [
                         ['orderby', 'asc']
-                    ],
-                })
+                    ]
+                });
                 return bookList;
             } catch (error) {
                 return null;
             }
         }
-        // 通过书的id获取书籍中的第一节
-    async getFirstSectionByBookId(id) {
+        // 通过书的id获取书籍中的第一节id
+    async getFirstSectionIdByBookId(id) {
         try {
-            const chapters = await this.app.model.Blog.findAll({
+            const chapters = await this.app.model.Chapter.findAll({
                 'order': [
                     ['orderby', 'asc']
                 ],
                 where: { book_id: id }
-            })
+            });
             let firstChapterId = chapters[0].dataValues.id;
-            const sections = await this.app.model.Blog.findAll({
+            const sections = await this.app.model.Section.findAll({
                 'order': [
                     ['orderby', 'asc']
                 ],
-                where: { chapters_id: firstChapterId }
-            })
+                where: { chapter_id: firstChapterId }
+            });
             return sections[0].dataValues.id;
         } catch (error) {
-            return null
+            return null;
         }
     }
 }

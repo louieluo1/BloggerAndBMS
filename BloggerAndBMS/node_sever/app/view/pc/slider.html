@@ -1,0 +1,5 @@
+<div>
+    <!-- include 可引入其他的模板，可以在多模板之间共享一些小模板，如果某个模板已使用了继承那么 include 将会非常有用 -->
+    <!-- 某些情况下，我们可能希望在模板文件不存在时不要抛出异常。对于这类情况，我们可以使用ignore missing来略过这些异常 -->
+    {%include "./swiper.html" ignore missing %} {%include "./account.html" ignore missing %} {%include "./powerby.html" ignore missing%}
+</div>

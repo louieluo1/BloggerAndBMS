@@ -1,0 +1,30 @@
+{% extends "pc/layout.html" %}{% block content %}
+<link rel="stylesheet" href="/css/pc/book.css">
+<div class="content">
+    <div class="bigbox">
+        <div class="box">
+            <div class="box-top">
+                <ul style="margin-left:20px;list-style:none;">
+                    {%for book in bookList%}
+                    <a href="/section/{{book.id}}" class="readgo">
+                        <li>
+                            <img src="{{book.img}}" alt="封面图">
+                            <div>
+                                <span class="bookname">{{book.title}}</span>
+                                <button class="read">阅读</button>
+                            </div>
+                        </li>
+                    </a>
+                    {%endfor%}
+                </ul>
+            </div>
+        </div>
+        <div class="footer">更多精彩内容敬请期待</div>
+    </div>
+    <div class="slider">
+        {%include "./slider.html" ignore missing%}
+    </div>
+</div>
+<!-- <script type="text/javascript" src="/js/pc/jquery.js"></script>
+<script src="/js/pc/lunbo.js"></script> -->
+{%endblock%}

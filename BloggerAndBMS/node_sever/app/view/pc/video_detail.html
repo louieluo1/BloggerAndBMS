@@ -1,0 +1,34 @@
+{% extends "pc/layout.html"%}{%block content%}
+<link rel="stylesheet" href="/css/pc/video_detail.css">
+<!-- <link rel="stylesheet" href="/css/md-html.css?v=1.1"> -->
+<div class="bast clear">
+    <div class="content">
+        <div class="bigbox">
+            <div class="box">
+                <div class="videolist">
+                    <h3 class="title">{{video.title}}</h3>
+                    <div class="video">
+                        {{video.iframe_url | safe}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="video_slider">
+            <div class="list">
+                <span class="open">{{video.title}}</span>
+                <div>
+                    <span class="anthology">选集</span>
+                    <ul>
+                        {% for video in videoList %}
+                        <li class="videonumber"><a href="/video/{{video.id}}">{{video.title}}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            <div class="slider">
+                {% include "./slider_video.html" ignore missing %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

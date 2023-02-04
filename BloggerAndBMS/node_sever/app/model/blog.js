@@ -1,5 +1,6 @@
+/* eslint-disable indent */
 module.exports = app => {
-    const { STRING, TEXT } = APP.Sequelize;
+    const { STRING, TEXT } = app.Sequelize;
 
     const Blog = app.model.define('blog', {
         title: STRING,
